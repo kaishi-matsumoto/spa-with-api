@@ -6,7 +6,7 @@ function App() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [pages, setPages] = useState([]);
   useEffect(() => {
-    fetch("https://qiita.com/api/v2/items")
+    fetch("https://qiita.com/api/v2/authenticated_user/items?page=1&per_page=20")
       .then(res => res.json())
       .then(
         (result) => {
@@ -29,7 +29,7 @@ function App() {
       <ul>
         {pages.map(item => (
           <li key={item.id}>
-            {item.name} {item.price}
+             {item.body}
           </li>
         ))}
       </ul>
