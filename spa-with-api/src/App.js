@@ -2,20 +2,39 @@ import React, { useEffect ,useState } from 'react';
 
 
 function App() {
-  const [pages, setPages] = useState({ hits: [] });
-  async function fetchPages() {
-    const response = await fetch('https://qiita.com/api/v2/items' ); 
-    const json = await response.json();
-    setPages(json);
+  const [error, setError] = useState(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [pages, setPages] = useState([]);
+  useEffect(() => {
+    fetch("https://qiita.com/api/v2/items")
+      .then(res => res.json())
+      .then(
+        (result) => {
+          setIsLoaded(true);
+          setPages(result);
+        },
+        (error) => {
+          setIsLoaded(true);
+          setError(error);
+        }
+      )
+  }, [])
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  } else if (!isLoaded) {
+    return <div>Loading...</div>;
+  } else {
+    return (
+      <ul>
+        {pages.map(item => (
+          <li key={item.id}>
+            {item.name} {item.price}
+          </li>
+        ))}
+      </ul>
+    );
   }
-  useEffect(()=>{
-    fetchPages();
-  },[]);
-return <React.Fragment>{pages.hits.map(item => (
-  <li key={item.objectID}>
-    <a href={item.url}>{item.title}</a>
-  </li>
-))}</React.Fragment>
 }
 
 export default App;
