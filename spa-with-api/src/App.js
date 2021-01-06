@@ -1,56 +1,23 @@
-import React, { useEffect ,useState } from 'react';
+/* import React, { Component } from 'react'; */
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import Navbar from './Navbar';
+import Pages from './Pages';
 
 
-function App() {
-  const [error, setError] = useState(null);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [pages, setPages] = useState([]);
-
-  useEffect(() => {
-    fetch("https://qiita.com/api/v2/items?page=1&per_page=20",{
-      method: 'GET',
-        credentials: 'include',
-        headers: {
-          'Authorization': 'Bearer: ed2180a8c46857854bc6934b13afb55bb2e604fb',
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': 'http://localhost:3000',
-          
-        },
-        mode: 'cors',
-      
-    })
-      .then(res => res.json())
-      .then(
-        (result) => {
-          setIsLoaded(true);
-          setPages(result);
-        },
-        
-        (error) => {
-          setIsLoaded(true);
-          setError(error);
-        }
-      )
-  }, [])
-
-  
-
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  } else if (!isLoaded) {
-    return <div>Loading...</div>;
-  } else {
+const App = props => {
+  const { match } = props;
     return (
-      <ul>
-        {pages.map(item => (
-          <li key={item.id}>
-            {item.body}
-          </li>
-        ))}
-      </ul>
+      <div>
+        <Router>
+          <div>
+            <Navbar />
+            
+            <Route path='/Pages' render={routeProps => <Pages {...routeProps} />}/>
+          </div>
+        </Router>
+      </div>
     );
   }
-  
-}
+
 
 export default App;
