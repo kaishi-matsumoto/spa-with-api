@@ -14,7 +14,7 @@ function App() {
           'Authorization': 'Bearer: ed2180a8c46857854bc6934b13afb55bb2e604fb',
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': 'http://localhost:3000',
-          'Request.credentials': 'omit'
+          
         },
         mode: 'cors',
       
