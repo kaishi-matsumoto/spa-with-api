@@ -6,7 +6,9 @@ function App() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [pages, setPages] = useState([]);
   useEffect(() => {
-    fetch("https://qiita.com/api/v2/authenticated_user/items?page=1&per_page=20")
+    fetch("https://qiita.com/api/v2/authenticated_user/items?page=1&per_page=20",{
+      headers: {'Authorization': 'Bearer: (2e984cc96dc0efc4ecb90a08ed5cdde2e370fee1)'}
+    })
       .then(res => res.json())
       .then(
         (result) => {
@@ -29,7 +31,7 @@ function App() {
       <ul>
         {pages.map(item => (
           <li key={item.id}>
-             {item.body}
+            {item.type} {item.message}
           </li>
         ))}
       </ul>
