@@ -7,7 +7,7 @@ function App() {
   const [pages, setPages] = useState([]);
   useEffect(() => {
     fetch("https://qiita.com/api/v2/authenticated_user/items?page=1&per_page=20",{
-      headers: {'Authorization': 'Bearer: (2e984cc96dc0efc4ecb90a08ed5cdde2e370fee1)'}
+      headers: {'Authorization': 'Bearer: ed2180a8c46857854bc6934b13afb55bb2e604fb'}
     })
       .then(res => res.json())
       .then(
