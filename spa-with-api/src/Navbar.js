@@ -1,8 +1,8 @@
 import React, { useEffect ,useState } from 'react';
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-
+import App from './App';
+import { BrowserRouter as Route } from 'react-router-dom';
 
 function Navbar(props) {
   const [error, setError] = useState(null);
@@ -50,28 +50,30 @@ function Navbar(props) {
   
 }
 
-const PageItems = props =>{
+const PageItems = (props) =>{
+   
+    
     return <div>
-            <Router>
-                {props.pages.map(item => (
-                <Link to='/Page'>
-                    <Li key={item.id}>
-                        <Title>{item.title}</Title>
-                        <br />
-                        <Body>{item.body}</Body>
-                        <br />
-                    </Li>
-                </Link>
-                
-            ))}
-             <Route path='/Page/:id' render={routeProps => <Page {...routeProps} />} />
-            </Router>
-        </div>
+        {props.pages.map(item => (
+            <MatchId item={item} title={props.title} body={props.body} />
+    ))}
+</div>
 }
 
-const Page =props =>{
-    const {match}= props;
-    return <div></div>
+const MatchId =({match}) =>{
+    return <div>
+        
+    <Li key={match.params.item.id}>
+        <Link to={`/pages/$(item.id)`}>
+            <Title>{match.params.item.title}</Title>
+            <br />
+            <Body>{match.params.item.body}</Body>
+            <br />
+        </Link>
+    </Li>
+
+    <Route exact path="/" component={App} id={match.params.id} title={match.params.title} body={match.params.body}/>
+</div>
 }
 
 const Ul = styled.ul`

@@ -1,14 +1,7 @@
-import React from 'react'
 
-class Pages extends React.Component {
-  render(){
-    return(
-      <div>
-        {this.props.page}
-      </div>
-    )
-  }
+const Pages =props =>{
+    
+    return <div>{props.title}<br />{props.body}</div>
 }
-
 
 export default Pages;
