@@ -2,6 +2,7 @@ import React, { useEffect ,useState } from 'react';
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import App from './App';
+import Pages from './Pages';
 import { BrowserRouter as Route } from 'react-router-dom';
 
 function Navbar(props) {
@@ -35,6 +36,7 @@ function Navbar(props) {
       )
   }, [])
 
+  console.log(pages.title)
 
   if (error) {
     return <div>Error: {error.message}</div>;
@@ -43,19 +45,30 @@ function Navbar(props) {
   } else {
     return (
       <Ul>
-        <PageItems pages={pages} />
+        {/* <PageItems pages={pages} title={pages.title}/> */}
+        {pages.map(item => (
+           <Li key={item.id}>
+           <Link to={`/pages/$(item.id)`}>
+               <Title>{item.title}</Title>
+               <br />
+               <Body>{item.body}</Body>
+               <br />
+           </Link>
+           <Route path="/pages/:id" component={Pages} />
+         <Route exact path="/" component={App} />
+       </Li>
+    ))}
       </Ul>
     );
   }
   
 }
 
-const PageItems = (props) =>{
+/* const PageItems = (props) =>{
    
-    
     return <div>
         {props.pages.map(item => (
-            <MatchId item={item} title={props.title} body={props.body} />
+            <MatchId item={item}  />
     ))}
 </div>
 }
@@ -63,18 +76,18 @@ const PageItems = (props) =>{
 const MatchId =({match}) =>{
     return <div>
         
-    <Li key={match.params.item.id}>
+    <Li key={this.props.match.params.item.id}>
         <Link to={`/pages/$(item.id)`}>
-            <Title>{match.params.item.title}</Title>
+            <Title>{this.props.match.item.title}</Title>
             <br />
-            <Body>{match.params.item.body}</Body>
+            <Body>{this.props.match.item.body}</Body>
             <br />
         </Link>
     </Li>
-
+    <Route path="/pages/:id" component={Pages} id={match.params.id} title={match.params.title} body={match.params.body}/>
     <Route exact path="/" component={App} id={match.params.id} title={match.params.title} body={match.params.body}/>
 </div>
-}
+} */
 
 const Ul = styled.ul`
     width:200px; 
