@@ -1,6 +1,8 @@
 import React, { useEffect ,useState } from 'react';
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+
 
 function Navbar(props) {
   const [error, setError] = useState(null);
@@ -33,7 +35,6 @@ function Navbar(props) {
       )
   }, [])
 
-  const {match} = props;
 
   if (error) {
     return <div>Error: {error.message}</div>;
@@ -42,20 +43,35 @@ function Navbar(props) {
   } else {
     return (
       <Ul>
-        {pages.map(item => (
-          <Link to='/Page'>
-            <Li key={item.id}>
-                <Title>{item.title}</Title>
-                <br />
-                <Body>{item.body}</Body>
-                <br />
-            </Li>
-          </Link>
-        ))}
+        <PageItems pages={pages} />
       </Ul>
     );
   }
   
+}
+
+const PageItems = props =>{
+    return <div>
+            <Router>
+                {props.pages.map(item => (
+                <Link to='/Page'>
+                    <Li key={item.id}>
+                        <Title>{item.title}</Title>
+                        <br />
+                        <Body>{item.body}</Body>
+                        <br />
+                    </Li>
+                </Link>
+                
+            ))}
+             <Route path='/Page/:id' render={routeProps => <Page {...routeProps} />} />
+            </Router>
+        </div>
+}
+
+const Page =props =>{
+    const {match}= props;
+    return <div></div>
 }
 
 const Ul = styled.ul`
