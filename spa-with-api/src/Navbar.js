@@ -26,7 +26,7 @@ function Navbar(props) {
         (result) => {
           setIsLoaded(true);
           setPages(result);
-          console.log(result);
+          console.log(result.title);
         },
         
         (error) => {
@@ -36,7 +36,7 @@ function Navbar(props) {
       )
   }, [])
 
-  console.log(pages.title)
+
 
   if (error) {
     return <div>Error: {error.message}</div>;
