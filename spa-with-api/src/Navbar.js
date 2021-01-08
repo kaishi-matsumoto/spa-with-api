@@ -1,9 +1,16 @@
-import React, { useEffect ,useState } from 'react';
+/* import React, { useEffect ,useState } from 'react';
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
+
 import App from './App';
-import Pages from './Pages';
-import { BrowserRouter as Route } from 'react-router-dom';
+
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link,
+    
+    
+  } from "react-router-dom";
 
 function Navbar(props) {
   const [error, setError] = useState(null);
@@ -26,45 +33,28 @@ function Navbar(props) {
         (result) => {
           setIsLoaded(true);
           setPages(result);
-/*           console.log(result); */
-/*           console.log(pages); */
-          /* if('title' in result[1]) {
-            console.log(`タイトルは「　${result[1].title}　」です`);
-        } else {
-
-            console.error('タイトルきてない！');
-        } */
-       /*  if(pages === result){ 
-            console.log('同じ値です');
-          }else{
-              console.log('違う値です');
-          } */
         },
         
         (error) => {
           setIsLoaded(true);
-
           setError(error);
-         
         }
       )
   }, [])
-
-  
-  
-
     
+  const {params} = props.match
+  console.log(params)
   if (error) {
     return <div>Error: {error.message}</div>;
   } else if (!isLoaded) {
 
     return <div>Loading...</div>;
   } else {
-   console.log(pages[0])
+   console.log(pages)
       
     return (
       <Ul>
-        {/* <PageItems pages={pages} title={pages.title}/> */}
+       <Router>
         {pages.map(item => (
            <Li key={item.id}>
            <Link to={`/pages/$(item.id)`}>
@@ -73,40 +63,23 @@ function Navbar(props) {
                <Body>{item.body}</Body>
                <br />
            </Link>
-           <Route path="/pages/:id" component={Pages} />
-         <Route exact path="/" component={App} />
+           <Switch>
+                <Route path="/pages/:id" component={Pages} />
+            　　    <Route exact path="/" component={App} />
+            </Switch>
        </Li>
     ))}
+    </Router>
       </Ul>
     );
   }
-  
 }
 
-/* const PageItems = (props) =>{
-   
+const Pages =()=>{
     return <div>
-        {props.pages.map(item => (
-            <MatchId item={item}  />
-    ))}
-</div>
-}
 
-const MatchId =({match}) =>{
-    return <div>
-        
-    <Li key={this.props.match.params.item.id}>
-        <Link to={`/pages/$(item.id)`}>
-            <Title>{this.props.match.item.title}</Title>
-            <br />
-            <Body>{this.props.match.item.body}</Body>
-            <br />
-        </Link>
-    </Li>
-    <Route path="/pages/:id" component={Pages} id={match.params.id} title={match.params.title} body={match.params.body}/>
-    <Route exact path="/" component={App} id={match.params.id} title={match.params.title} body={match.params.body}/>
-</div>
-} */
+    </div>
+}
 
 const Ul = styled.ul`
     width:200px; 
@@ -135,3 +108,4 @@ const Body = styled.div`
 
 
 export default Navbar;
+ */
