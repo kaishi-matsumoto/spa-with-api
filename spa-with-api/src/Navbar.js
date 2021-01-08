@@ -26,23 +26,42 @@ function Navbar(props) {
         (result) => {
           setIsLoaded(true);
           setPages(result);
-          console.log(result.title);
+/*           console.log(result); */
+/*           console.log(pages); */
+          /* if('title' in result[1]) {
+            console.log(`タイトルは「　${result[1].title}　」です`);
+        } else {
+
+            console.error('タイトルきてない！');
+        } */
+       /*  if(pages === result){ 
+            console.log('同じ値です');
+          }else{
+              console.log('違う値です');
+          } */
         },
         
         (error) => {
           setIsLoaded(true);
+
           setError(error);
+         
         }
       )
   }, [])
 
+  
+  
 
-
+    
   if (error) {
     return <div>Error: {error.message}</div>;
   } else if (!isLoaded) {
+
     return <div>Loading...</div>;
   } else {
+   console.log(pages[0])
+      
     return (
       <Ul>
         {/* <PageItems pages={pages} title={pages.title}/> */}
