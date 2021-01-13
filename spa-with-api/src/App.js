@@ -2,11 +2,9 @@ import React, { useEffect ,useState } from 'react';
 import styled from 'styled-components'
 import {
     BrowserRouter as Router,
-   /*  Switch, */
     Route,
     Link,
-/*     useRouteMatch, */
-/*   useParams */
+    Switch,
   } from 'react-router-dom';
 
 function App() {
@@ -47,17 +45,15 @@ function App() {
     return <div>Error: {error.message}</div>;
   } else if (!isLoaded) {
     return <div>Loading...</div>;
-  } else if(pages !== []){
+  } else{
   
     return (
-      
-        <Router>
+     <Router>
           <Root>
             <Sidebar>
                 {pages.map(item => (
                   <Li key={item.id}>          
-                    <Link to={'/pages/' + item.id}>
-                    {/* <Link to={`/page/${pages.id}`}> */}
+                    <Link to={`/pages/${item.id}`}>
                         <Title>{item.title}</Title>
                         <br />
                         <Body>{item.body}</Body>
@@ -66,33 +62,29 @@ function App() {
                   </Li>
                     ))}
               </Sidebar>
-
-               {/*  <Switch> */}
+                  <Switch>
                       <Main>
-                        <h1>Pages</h1>
+                        <Route exact={true} path="/" render={()=>(
+                          <h1>閲覧したい投稿を選んでください。</h1>
+                        ) } />
                         {pages && (
                           <Route path="/pages/:pageId" render={({match})=>(
-                            <Pages pages = {pages.find(p => p.id === match.params.pageId)}/>
+                            <Pages page = {pages.find(p => p.id === match.params.pageId)}/>
                           )}/>
                         )}
-                        
-                      </Main>                    
-                      
-              {/*   </Switch> */}
-            </Root>
+                      </Main>   
+                      </Switch>                 
+                  </Root>
         </Router>
-      
     );
-  } else {
-    return <div>nothing</div>
-  }
+  } 
 }
 
-const Pages =({　pages　})=>{
-  console.log(pages)
+const Pages =(props)=>{
+  console.log(props.page)
   return <React.Fragment>
-           <Title1>{pages.title}</Title1>
-          <Body1>{pages.body}</Body1>
+           <Title1>{props.page.title}</Title1>
+            <Body1>{props.page.body}</Body1>
           </React.Fragment>
 }
 
