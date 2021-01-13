@@ -1,36 +1,16 @@
-
-/* import { BrowserRouter as Router, Route } from 'react-router-dom';
-import Navbar from './Navbar';
-import Pages from './Pages';
-
-
-const App = (props) => {
-  
-    return (
-      <div>
-        <Router>
-          <div>
-           <Route path='/' render={routeProps => <Navbar {...routeProps} />}/>
-            <Route path='/pages/:id' render={routeProps => <Pages {...routeProps} />}/>
-          </div>
-        </Router>
-      </div>
-    );
-  }
-
-
-export default App; */
-
 import React, { useEffect ,useState } from 'react';
 import styled from 'styled-components'
 import {
     BrowserRouter as Router,
-    Switch,
+   /*  Switch, */
     Route,
     Link,
-  } from "react-router-dom";
+/*     useRouteMatch, */
+/*   useParams */
+  } from 'react-router-dom';
 
-function App(props) {
+function App() {
+  
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [pages, setPages] = useState([]);
@@ -39,11 +19,12 @@ function App(props) {
     fetch("https://qiita.com/api/v2/items?page=1&per_page=20",{
       method: 'GET',
         headers: {
-          'Authorization': 'Bearer ed2180a8c46857854bc6934b13afb55bb2e604fb',
+          'Authorization': 'Bearer 3c5a0b50a1ae7eba9894433624b389da530e0429',
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': 'http://localhost:3000',
         },
         mode: 'cors',
+        
       
     })
       .then(res => res.json())
@@ -59,58 +40,75 @@ function App(props) {
         }
       )
   }, [])
-
+ 
+  
   
   if (error) {
     return <div>Error: {error.message}</div>;
   } else if (!isLoaded) {
-
     return <div>Loading...</div>;
-  } else {
+  } else if(pages !== []){
+  
     return (
-      <Ul>
-       <Router>
-        {pages.map(item => (
-           <Li key={item.id}>          
-           <Link to={'/page/' + item.id}>
-               <Title>{item.title}</Title>
-               <br />
-               <Body>{item.body}</Body>
-               <br />
-           </Link>
-           <Switch>
-               <Route exact path="/" component={App} />
-                <Route path="/pages/:id" render={routeProps => <Pages {...routeProps} pages={pages}/>} />
-            </Switch>
-       </Li>
-    ))}
-    </Router>
-      </Ul>
+      
+        <Router>
+          <Root>
+            <Sidebar>
+                {pages.map(item => (
+                  <Li key={item.id}>          
+                    <Link to={'/pages/' + item.id}>
+                    {/* <Link to={`/page/${pages.id}`}> */}
+                        <Title>{item.title}</Title>
+                        <br />
+                        <Body>{item.body}</Body>
+                        <br />
+                    </Link>
+                  </Li>
+                    ))}
+              </Sidebar>
+
+               {/*  <Switch> */}
+                      <Main>
+                        <h1>Pages</h1>
+                        {pages && (
+                          <Route path="/pages/:pageId" render={({match})=>(
+                            <Pages pages = {pages.find(p => p.id === match.params.pageId)}/>
+                          )}/>
+                        )}
+                        
+                      </Main>                    
+                      
+              {/*   </Switch> */}
+            </Root>
+        </Router>
+      
     );
+  } else {
+    return <div>nothing</div>
   }
 }
 
-const Pages =(props)=>{
-  
-  
-  console.log(props.id)
-  const title = props.pages.filter(e => e.id === props.id).map((item) => item.title) 
-  const body = props.pages.filter(e => e.id === props.id).map((item) => item.body) 
-  
-  return(
-      <React.Fragment>
-          <div>   
-              <Title1>{title}</Title1>
-               <br />
-               <Body1>{body}</Body1>
-               <br />
-          </div>
-      </React.Fragment>
-  );
+const Pages =({　pages　})=>{
+  console.log(pages)
+  return <React.Fragment>
+           <Title1>{pages.title}</Title1>
+          <Body1>{pages.body}</Body1>
+          </React.Fragment>
 }
 
-const Ul = styled.ul`
-    width:200px; 
+const Root =styled.div`
+  display: flex;
+`
+const Main = styled.div`
+  flex: 1;
+  height: 100vh;
+  overflow; auto;
+`
+
+const Sidebar = styled.ul`
+    width: 33vw;
+    height: 100vh;
+    overflow: auto;
 `
 
 const Li = styled.li`
@@ -135,6 +133,7 @@ const Body = styled.div`
 `
 
 const Title1 = styled.div`
+  
   font-weight: bold;
   word-wrap: break-word;
   width:200px; 
@@ -142,6 +141,7 @@ const Title1 = styled.div`
 `
 
 const Body1 = styled.div`
+  
   width:200px; height:100px;
   margin:5px; padding:10px; 
   border:1px solid black;
